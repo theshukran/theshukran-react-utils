@@ -1,16 +1,16 @@
 const vscode = require('vscode');
 const lineColumn = require("line-column");
 
-const { Position } = vscode;
+const { Position, Uri } = vscode;
 const { settings, editorContext, createFile, normalizeComponentName } = require('./utils');
 
 
 exports.extractComponentToFile = () => editorContext((editor, selection, text, selectedText) => {
-    vscode.window.showInputBox({ prompt: 'Insert component name' }).then(input => {
+    return vscode.window.showInputBox({ prompt: 'Insert component name' }).then(input => {
         if (!input) return;
         const { componentName, fileName } = normalizeComponentName(input);
 
-        createFile(componentName, fileName, selectedText, text, err => {
+        createFile(componentName, fileName, selectedText, text, (err, filePath) => {
             if (err) return vscode.window.showInformationMessage(err);
 
             editor.edit(edit => {
@@ -23,7 +23,9 @@ exports.extractComponentToFile = () => editorContext((editor, selection, text, s
 
                 edit.replace(selection, `<${componentName}/>`)
             }).then(() => {
-                vscode.commands.executeCommand('editor.action.formatDocument');
+                return vscode.commands.executeCommand('editor.action.formatDocument');
+            }).then(() => {
+                return vscode.commands.executeCommand('vscode.executeFormatDocumentProvider', Uri.file(filePath));
             });
         });
     });
@@ -31,7 +33,7 @@ exports.extractComponentToFile = () => editorContext((editor, selection, text, s
 
 exports.extractComponentToFunction = () => editorContext((editor, selection, text, selectedText) => {
     if (!~text.indexOf('render()')) return;
-    vscode.window.showInputBox({ prompt: 'Insert component name (render__NAME__)' }).then(input => {
+    return vscode.window.showInputBox({ prompt: 'Insert component name (render__NAME__)' }).then(input => {
         if (!input) return;
         editor.edit(edit => {
             const { componentName } = normalizeComponentName(input)
@@ -40,16 +42,15 @@ exports.extractComponentToFunction = () => editorContext((editor, selection, tex
 
             edit.insert(new Position(start.line - 1, start.col - 1), renderFunctionText);
             edit.replace(selection, `\t\t{this.render${componentName}()}`);
-            vscode.commands.executeCommand('editor.action.format')
         }).then(() => {
-            vscode.commands.executeCommand('editor.action.formatDocument');
+            return vscode.commands.executeCommand('editor.action.formatDocument');
         });
     });
 });
 
 
 exports.extractStyle = () => editorContext((editor, selection, text, selectedText) => {
-    vscode.window.showInputBox({ prompt: 'Insert name' }).then(input => {
+    return vscode.window.showInputBox({ prompt: 'Insert name' }).then(input => {
         if (!input) return;
         editor.edit(edit => {
             let row = editor.document.lineCount + 1, stylesText;
@@ -64,22 +65,20 @@ exports.extractStyle = () => editorContext((editor, selection, text, selectedTex
 
             edit.replace(selection, `styles.${input}`);
             edit.insert(new Position(row, 0), stylesText);
-            vscode.commands.executeCommand('editor.action.format')
         }).then(() => {
-            vscode.commands.executeCommand('editor.action.formatDocument');
+            return vscode.commands.executeCommand('editor.action.formatDocument');
         });
     });
 });
 
 
 exports.embedComponent = () => editorContext((editor, selection, text, selectedText) => {
-    vscode.window.showInputBox({ prompt: 'Insert component name' }).then(input => {
+    return vscode.window.showInputBox({ prompt: 'Insert component name' }).then(input => {
         if (!input) return;
         editor.edit(edit => {
             edit.replace(selection, `<${input}>\n${selectedText}\n</${input}>`);
-            vscode.commands.executeCommand('editor.action.format');
         }).then(() => {
-            vscode.commands.executeCommand('editor.action.formatDocument');
+            return vscode.commands.executeCommand('editor.action.formatDocument');
         });
     });
 });
