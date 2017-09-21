@@ -24,8 +24,6 @@ exports.extractComponentToFile = () => editorContext((editor, selection, text, s
                 edit.replace(selection, `<${componentName}/>`)
             }).then(() => {
                 return vscode.commands.executeCommand('editor.action.formatDocument');
-            }).then(() => {
-                return vscode.commands.executeCommand('vscode.executeFormatDocumentProvider', Uri.file(filePath));
             });
         });
     });
