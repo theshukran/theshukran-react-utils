@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-__IMPORT__
+__IMPORTS__
 
 class __COMPONENTNAME__ extends Component {
     render() {
         return (
-            <View>
-                __CONTENTS__
-             </View>
+            __CONTENTS__
         );
     }
 }

@@ -6,7 +6,7 @@ const mkdirp = require('mkdirp');
 const { dirname } = require('path');
 
 
-const noop = () => {}
+const noop = () => { }
 
 const createPackage = (folder) => {
     const package = `{\n\t"name" : "@${lastPathComponent(folder)}"\n}`;
@@ -14,7 +14,8 @@ const createPackage = (folder) => {
 }
 
 const lastPathComponent = (path) => {
-    return _.takeRight(path.split('/'))[0] || 'components';
+    const parts = path.split('/');
+    return parts.pop() || parts.pop();
 }
 
 const generateImport = (text, selection) => {
@@ -23,24 +24,26 @@ const generateImport = (text, selection) => {
 }
 
 
-const capitalizedCamelCase = (text) => {
-    return _.capitalize(_.camelCase(text))
+const normalizeComponentName = (string) => {
+    return {
+        componentName: _.upperFirst(_.camelCase(_.startCase(string))),
+        fileName: _.kebabCase(string)
+    }
 }
 
 
-const createFile = (name, contents, original, callback) => {
+const createFile = (componentName, fileName, contents, original, callback) => {
     const rootPath = vscode.workspace.rootPath;
     const folderPath = settings.componentsFolderPath;
-    const filePath = `${rootPath}${folderPath}${name}/index.js`;
+    const filePath = `${rootPath}${folderPath}${fileName}/index.js`;
     const packagePath = `${rootPath}${folderPath}package.json`;
 
     if (fs.existsSync(filePath)) return callback('File exists');
 
-    fs.readFile(`${settings.extensionPath}/assets/template.js`, 'utf-8', (err, data) => {
-        let componentContents = data.toString();
-        componentContents = componentContents.replace(new RegExp('__COMPONENTNAME__', 'g'), capitalizedCamelCase(name));
-        componentContents = componentContents.replace("__CONTENTS__", contents);
-        componentContents = componentContents.replace("__IMPORT__", generateImport(original, contents));
+    fs.readFile(`${settings.extensionPath}/assets/template.js`, 'utf-8', (err, template) => {
+        const imports = generateImport(original, contents);
+        const data = _.mapKeys({ componentName, contents, imports }, (value, key) => key.toUpperCase());
+        const componentContents = _.template(template, { interpolate: /__([\s\S]+?)__/g })(data);
 
         mkdirp(dirname(filePath), err => {
             if (err) return callback(err);
@@ -75,7 +78,7 @@ const settings = {
 
 
 exports.settings = settings;
-exports.capitalizedCamelCase = capitalizedCamelCase;
+exports.normalizeComponentName = normalizeComponentName;
 
 exports.createFile = createFile;
 exports.editorContext = editorContext;
