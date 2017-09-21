@@ -46,12 +46,12 @@ const createFile = (componentName, fileName, contents, original, callback) => {
         const componentContents = _.template(template, { interpolate: /__([\s\S]+?)__/g })(data);
 
         mkdirp(dirname(filePath), err => {
-            if (err) return callback(err);
+            if (err) return callback(err, filePath);
 
             if (!fs.existsSync(packagePath))
                 createPackage(packagePath);
 
-            fs.writeFile(filePath, componentContents, callback);
+            fs.writeFile(filePath, componentContents, err => callback(err, filePath));
         });
     });
 };
