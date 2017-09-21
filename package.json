@@ -1,0 +1,104 @@
+{
+    "name": "theshukran-react-utils",
+    "displayName": "theShukran React/React Native utils",
+    "description": "React/React Native utils",
+    "version": "1.0.0",
+    "publisher": "theShukran",
+    "keywords": [
+        "javascript",
+        "react",
+        "react-native"
+    ],
+    "engines": {
+        "vscode": "^1.5.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/theShukran/theshukran-react-utils"
+    },
+    "homepage": "https://github.com/theShukran/theshukran-react-utils",
+    "activationEvents": [
+        "*"
+    ],
+    "main": "extension",
+    "icon": "assets/images/logo.png",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.extractComponentToFile",
+                "title": "Extract component to a new file"
+            },
+            {
+                "command": "extension.extractComponentToFunction",
+                "title": "Extract component to a function"
+            },
+            {
+                "command": "extension.extractStyle",
+                "title": "Extract style to StyleSheet"
+            },
+            {
+                "command": "extension.embedComponent",
+                "title": "Embed component"
+            }
+        ],
+        "menus": {
+            "editor/context": [
+                {
+                    "when": "resourceLangId == javascript && editorHasSelection",
+                    "command": "extension.extractComponentToFile",
+                    "group": "1_modification@10"
+                },
+                {
+                    "when": "resourceLangId == javascript && editorHasSelection",
+                    "command": "extension.extractComponentToFunction",
+                    "group": "1_modification@11"
+                },
+                {
+                    "when": "resourceLangId == javascript && editorHasSelection",
+                    "command": "extension.embedComponent",
+                    "group": "1_modification@12"
+                },
+                {
+                    "when": "resourceLangId == javascript && editorHasSelection",
+                    "command": "extension.extractStyle",
+                    "group": "1_modification@13"
+                }
+            ]
+        },
+        "configuration": {
+            "type": "object",
+            "title": "Extract component configuration",
+            "properties": {
+                "theshukran-react-utils.path": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": "/src/components/",
+                    "description": "Specifies the folder path where components will be extracted to."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install"
+    },
+    "devDependencies": {
+        "typescript": "^2.0.3",
+        "vscode": "^1.0.0",
+        "mocha": "^2.3.3",
+        "eslint": "^3.6.0",
+        "@types/node": "^6.0.40",
+        "@types/mocha": "^2.2.32"
+    },
+    "dependencies": {
+        "fs": "0.0.1-security",
+        "line-column": "^1.0.2",
+        "lodash": "^4.17.4",
+        "mkdirp": "^0.5.1",
+        "path": "^0.12.7"
+    }
+}
