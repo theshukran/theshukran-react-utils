@@ -37,16 +37,17 @@ const createFile = (componentName, fileName, contents, original, callback) => {
     const folderPath = settings.componentsFolderPath;
     const filePath = `${rootPath}${folderPath}${fileName}/index.js`;
     const packagePath = `${rootPath}${folderPath}package.json`;
+    const templatePath = `${settings.extensionPath}/assets/template.js`
 
     if (fs.existsSync(filePath)) return callback('File exists');
 
-    fs.readFile(`${settings.extensionPath}/assets/template.js`, 'utf-8', (err, template) => {
+    fs.readFile(templatePath, 'utf-8', (err, template) => {
         const imports = generateImport(original, contents);
         const data = _.mapKeys({ componentName, contents, imports }, (value, key) => key.toUpperCase());
         const componentContents = _.template(template, { interpolate: /__([\s\S]+?)__/g })(data);
 
         mkdirp(dirname(filePath), err => {
-            if (err) return callback(err, filePath);
+            if (err) return callback(err);
 
             if (!fs.existsSync(packagePath))
                 createPackage(packagePath);
