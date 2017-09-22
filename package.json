@@ -9,8 +9,7 @@
     "react",
     "react-native",
     "extract",
-    "component",
-    "refactor"
+    "component"
   ],
   "engines": {
     "vscode": "^1.5.0"
