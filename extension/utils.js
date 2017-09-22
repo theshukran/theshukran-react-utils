@@ -8,9 +8,9 @@ const { dirname } = require('path');
 
 const noop = () => { }
 
-const createPackage = (folder) => {
-    const package = `{\n\t"name" : "@${lastPathComponent(folder)}"\n}`;
-    fs.writeFile(folder, package, noop);
+const createPackage = (packagePath) => {
+    const package = `{\n\t"name" : "@${settings.componentsFolderLastPath}"\n}`;
+    fs.writeFile(packagePath, package, noop);
 }
 
 const lastPathComponent = (path) => {
