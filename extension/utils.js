@@ -20,7 +20,8 @@ const lastPathComponent = (path) => {
 
 const generateImport = (text, selection) => {
     const regex = /import(?:[\W])*?\{([^}]*?)\}(?:[\W])*?from.*'react-native'/gm;
-    return text.match(regex).join('\n')
+    const imports = text.match(regex)
+    return imports ? imports.join('\n') : ''
 }
 
 
