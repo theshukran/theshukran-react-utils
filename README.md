@@ -21,3 +21,6 @@ Also creates a package.json for referencing components (e.g. `import MyComponent
 
 ## Settings:
 - `extractcomponent.path`: components destination path (relative to project) _(default: "src/components/")_
+
+
+![video](https://s3-eu-west-1.amazonaws.com/theshukran-photo/2017-09-24-09_07_42-compressor.gif)
