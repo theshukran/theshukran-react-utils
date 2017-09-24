@@ -2,7 +2,7 @@
   "name": "theshukran-react-utils",
   "displayName": "theShukran React/React Native utils",
   "description": "Extract and embed React/React Native components and styles.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "theShukran",
   "keywords": [
     "javascript",
