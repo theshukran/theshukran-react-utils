@@ -2,10 +2,10 @@
   "name": "theshukran-react-utils",
   "displayName": "theShukran React/React Native utils",
   "description": "Extract and embed React/React Native components and styles.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "theShukran",
   "keywords": [
-    "javascript",
+    "javascriptreact",
     "react",
     "react-native",
     "extract",
@@ -49,22 +49,42 @@
     "menus": {
       "editor/context": [
         {
-          "when": "resourceLangId == javascript && editorHasSelection",
+          "when": "editorLangId == javascript && editorHasSelection",
           "command": "extension.extractComponentToFile",
           "group": "1_modification@10"
         },
         {
-          "when": "resourceLangId == javascript && editorHasSelection",
+          "when": "editorLangId == javascript  && editorHasSelection",
           "command": "extension.extractComponentToFunction",
           "group": "1_modification@11"
         },
         {
-          "when": "resourceLangId == javascript && editorHasSelection",
+          "when": "editorLangId == javascript && editorHasSelection",
           "command": "extension.embedComponent",
           "group": "1_modification@12"
         },
         {
-          "when": "resourceLangId == javascript && editorHasSelection",
+          "when": "editorLangId == javascript && editorHasSelection",
+          "command": "extension.extractStyle",
+          "group": "1_modification@13"
+        },
+        {
+          "when": "editorLangId == javascriptreact && editorHasSelection",
+          "command": "extension.extractComponentToFile",
+          "group": "1_modification@10"
+        },
+        {
+          "when": "editorLangId == javascriptreact  && editorHasSelection",
+          "command": "extension.extractComponentToFunction",
+          "group": "1_modification@11"
+        },
+        {
+          "when": "editorLangId == javascriptreact && editorHasSelection",
+          "command": "extension.embedComponent",
+          "group": "1_modification@12"
+        },
+        {
+          "when": "editorLangId == javascriptreact && editorHasSelection",
           "command": "extension.extractStyle",
           "group": "1_modification@13"
         }
